@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Procedural Visuals</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --panel-bg: #141414;
+      --border: #222;
+      --border-hover: #3a3422;
+      --accent: #c8a050;
+      --text: #e0d8c8;
+      --text-muted: #807060;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #000;
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    header h1 {
+      font-size: 14px;
+      margin: 0;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    header .subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      padding: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    @media (max-width: 960px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .grid { grid-template-columns: 1fr; padding: 16px; gap: 12px; }
+    }
+
+    .tile {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      background: #000;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      text-decoration: none;
+      color: var(--text);
+      display: block;
+      transition: border-color 250ms ease;
+    }
+    .tile:hover {
+      border-color: var(--accent);
+    }
+
+    .frame-wrap {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .tile iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1000px;
+      height: 1000px;
+      transform-origin: top left;
+      transform: scale(var(--tile-scale, 0.3));
+      border: 0;
+      pointer-events: none;
+      background: #000;
+    }
+
+    .tile.studio iframe {
+      opacity: 0.65;
+      transition: opacity 1500ms ease;
+    }
+
+    .tile-label {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 10px 12px 8px;
+      background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0));
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      opacity: 0.55;
+      transition: opacity 250ms ease, color 250ms ease;
+      pointer-events: none;
+      z-index: 100;
+    }
+    .tile:hover .tile-label {
+      opacity: 1;
+      color: var(--accent);
+    }
+
+    .tile-pre-fade {
+      position: absolute;
+      inset: 0;
+      background: var(--bg);
+      opacity: 1;
+      transition: opacity 400ms ease;
+      pointer-events: none;
+      z-index: 50;
+    }
+    .tile.loaded .tile-pre-fade {
+      opacity: 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 12px 16px 24px;
+      color: var(--text-muted);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Procedural Visuals</h1>
+  <span class="subtitle">refresh for new seeds</span>
+</header>
+
+<div class="grid">
+
+  <a class="tile" href="circle_packing.html">
+    <div class="frame-wrap">
+      <iframe data-src="circle_packing.html" data-slider="seed" data-action="generate" data-hide-panel="controls" loading="lazy"></iframe>
+    </div>
+    <div class="tile-pre-fade"></div>
+    <div class="tile-label">Orbital Packing</div>
+  </a>
+
+  <a class="tile" href="circle_packing_v2_concentric.html">
+    <div class="frame-wrap">
+      <iframe data-src="circle_packing_v2_concentric.html" data-slider="seed" data-action="generate" data-hide-panel="controls" loading="lazy"></iframe>
+    </div>
+    <div class="tile-pre-fade"></div>
+    <div class="tile-label">Concentric Packing</div>
+  </a>
+
+  <a class="tile" href="crystalline.html">
+    <div class="frame-wrap">
+      <iframe data-src="crystalline.html" loading="lazy"></iframe>
+    </div>
+    <div class="tile-pre-fade"></div>
+    <div class="tile-label">Crystalline</div>
+  </a>
+
+  <a class="tile" href="growth.html">
+    <div class="frame-wrap">
+      <iframe data-src="growth.html" data-slider="rngSeed" data-action="grow" data-hide-panel="panel" loading="lazy"></iframe>
+    </div>
+    <div class="tile-pre-fade"></div>
+    <div class="tile-label">Growth</div>
+  </a>
+
+  <a class="tile" href="life.html">
+    <div class="frame-wrap">
+      <iframe data-src="life.html" loading="lazy"></iframe>
+    </div>
+    <div class="tile-pre-fade"></div>
+    <div class="tile-label">Game of Life</div>
+  </a>
+
+  <a class="tile" href="quantum_life.html">
+    <div class="frame-wrap">
+      <iframe data-src="quantum_life.html" loading="lazy"></iframe>
+    </div>
+    <div class="tile-pre-fade"></div>
+    <div class="tile-label">Quantum Life</div>
+  </a>
+
+  <a class="tile" href="topological_layer.html">
+    <div class="frame-wrap">
+      <iframe data-src="topological_layer.html" loading="lazy"></iframe>
+    </div>
+    <div class="tile-pre-fade"></div>
+    <div class="tile-label">Topological</div>
+  </a>
+
+  <a class="tile studio" href="studio.html">
+    <div class="frame-wrap">
+      <iframe class="studio-layer" data-src="crystalline.html" loading="lazy"></iframe>
+      <iframe class="studio-layer" data-src="topological_layer.html" loading="lazy"></iframe>
+      <iframe class="studio-layer" data-src="life.html" loading="lazy"></iframe>
+      <iframe class="studio-layer" data-src="circle_packing.html" data-slider="seed" data-action="generate" data-hide-panel="controls" loading="lazy"></iframe>
+    </div>
+    <div class="tile-pre-fade"></div>
+    <div class="tile-label">Studio</div>
+  </a>
+
+</div>
+
+<footer>file://procedural_visuals</footer>
+
+<script>
+  // Compute and maintain --tile-scale per tile so iframe content fills it cleanly.
+  const CONTENT_SIZE = 1000;
+  const ro = new ResizeObserver(entries => {
+    for (const entry of entries) {
+      const w = entry.contentRect.width;
+      entry.target.style.setProperty('--tile-scale', (w / CONTENT_SIZE).toFixed(4));
+    }
+  });
+  document.querySelectorAll('.tile').forEach(t => ro.observe(t));
+
+  // Boot each iframe with a cache-busting URL + DOM-injected random seed where applicable.
+  function bootFrame(iframe) {
+    const src = iframe.dataset.src;
+    if (!src) return;
+    const cacheBust = Date.now().toString(36) + Math.floor(Math.random() * 1e6).toString(36);
+    iframe.src = src + '?t=' + cacheBust;
+
+    iframe.addEventListener('load', () => {
+      const sliderId = iframe.dataset.slider;
+      const actionId = iframe.dataset.action;
+      const hidePanelId = iframe.dataset.hidePanel;
+      try {
+        const doc = iframe.contentDocument;
+        if (!doc) { markLoaded(iframe); return; }
+
+        if (hidePanelId) {
+          const style = doc.createElement('style');
+          style.textContent =
+            '#' + hidePanelId + ' { display: none !important; }' +
+            'body { padding: 0 !important; margin: 0 !important; }' +
+            'canvas { max-width: 100% !important; max-height: 100% !important; }';
+          doc.head.appendChild(style);
+        }
+
+        if (sliderId) {
+          const slider = doc.getElementById(sliderId);
+          if (slider) {
+            slider.value = Math.floor(Math.random() * 9999) + 1;
+            slider.dispatchEvent(new Event('input', { bubbles: true }));
+            const action = actionId && doc.getElementById(actionId);
+            if (action) {
+              setTimeout(() => action.click(), 30);
+            }
+          }
+        }
+      } catch (e) {
+        // cross-origin (shouldn't happen on file://) — ignore
+      }
+      markLoaded(iframe);
+    }, { once: true });
+  }
+
+  function markLoaded(iframe) {
+    const tile = iframe.closest('.tile');
+    if (tile) tile.classList.add('loaded');
+  }
+
+  document.querySelectorAll('iframe[data-src]').forEach(bootFrame);
+
+  // Studio tile: slow z-order cycle with opacity crossfade.
+  // Cycle: every DWELL_MS, the frontmost layer fades out, drops to back, fades back in.
+  const DWELL_MS = 6000;
+  const FADE_MS = 1500;
+  const layers = Array.from(document.querySelectorAll('.studio-layer'));
+  if (layers.length > 1) {
+    // Initial stacking: order array holds layer indices, position 0 = back, last = front.
+    const order = layers.map((_, i) => i);
+
+    function paintOrder() {
+      order.forEach((layerIdx, position) => {
+        layers[layerIdx].style.zIndex = position;
+      });
+    }
+    paintOrder();
+
+    function step() {
+      const topIdx = order[order.length - 1];
+      const topEl = layers[topIdx];
+      // fade out
+      topEl.style.opacity = '0';
+      setTimeout(() => {
+        // move to back of stack
+        order.pop();
+        order.unshift(topIdx);
+        paintOrder();
+        // fade back in
+        topEl.style.opacity = '0.65';
+      }, FADE_MS);
+    }
+
+    setInterval(step, DWELL_MS);
+  }
+</script>
+
+</body>
+</html>
